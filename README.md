@@ -1,38 +1,12 @@
-# File-Upload-In-Express-js
-1. install multer.
-    npm i multer
-2.Make a GET method for file upload
+# 📂 File Upload in Express.js with Multer
 
- app.get("/upload",(req,res)=>{
-     
-    res.sendFile(__dirname+"/index.html");
-});
+This guide will help you set up file uploads in an Express.js application using the `multer` middleware.
 
-and index.html
+---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
+## 🚀 Installation
 
-    <title>Express file Upload with multer</title>
-    
-  </head>
-  <body>
+First, install `multer` using npm:
 
-    <form
-      action="http://localhost:3000/" 
-      method="post" 
-      enctype="multipart/form-data"
-    >
-
-     <input type="file" name="avatar" multiple>
-     <input type="submit" name="submit">
-
-    </form>
-     
-  </body>
-</html>
-   
-
-
+```sh
+npm i multer
