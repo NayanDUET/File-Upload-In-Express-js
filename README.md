@@ -33,7 +33,7 @@ Here the index.html file
       enctype="multipart/form-data"
     >
 
-     <input type="file" name="avatar" multiple>
+     <input type="file" name="avatar">
      <input type="submit" name="submit">
 
     </form>
@@ -81,7 +81,29 @@ app.listen(3000,()=>{
 });
 
 ```
-##And For the multiple field file upload
+
+##For the single field multiple files upload 
+and make sure that index.html file be
+```sh
+<input type="file" name="avatar" multiple>
+<input type="submit" name="submit">
+```
+```sh
+app.post('/', upload.array('avatar',5),(req, res, next)=> {
+  // req.file is the `avatar` file
+  res.send('file uploded');
+});
+```
+
+
+##And For the multiple field files  upload
+the index.html file be
+
+```sh
+<input type="file" name="avatar" multiple>
+<input type="file" name="gallery" multiple>
+<input type="submit" name="submit">
+```
 
 ```sh
 const cUploade = 
