@@ -10,3 +10,92 @@ First, install `multer` using npm:
 
 ```sh
 npm i multer
+
+```
+Then make a index.html file for 'GET' method
+
+Here the index.html file
+
+```sh
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Express file Upload with multer</title>
+    
+  </head>
+  <body>
+
+    <form
+      action="http://localhost:3000/" 
+      method="post" 
+      enctype="multipart/form-data"
+    >
+
+     <input type="file" name="avatar" multiple>
+     <input type="submit" name="submit">
+
+    </form>
+     
+  </body>
+</html>
+```
+And 
+
+```sh
+app.get("/upload",(req,res)=>{
+     
+    res.sendFile(__dirname+"/index.html");
+});
+
+```
+##For the single field file upload
+
+```sh
+
+const express = require('express');
+const multer = require('multer');
+
+
+const upload = multer({ 
+
+    dest: 'uploads/' //here files be uploded
+});
+
+const app = express();
+ 
+
+app.get("/upload",(req,res)=>{
+     
+    res.sendFile(__dirname+"/index.html");
+});
+
+app.post('/', upload.single('avatar'),(req, res, next)=> {
+  // req.file is the `avatar` file
+  res.send('file uploded');
+});
+
+app.listen(3000,()=>{
+    console.log('3000 port is running...');
+});
+
+```
+##And For the multiple field file upload
+
+```sh
+const cUploade = 
+    upload.fields([
+
+        {name: 'avatar', maxCount: 1 }, 
+        { name: 'gallery', maxCount: 8}
+    
+       ]);
+
+app.post('/', cUploade,(req, res, next)=> {
+   res.send('file uploded');
+});
+```
+
+
+
