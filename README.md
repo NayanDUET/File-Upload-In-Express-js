@@ -120,4 +120,120 @@ app.post('/', cUploade,(req, res, next)=> {
 ```
 
 
+###if you want ot control over the each feild in separate condition then
+
+```sh
+
+const upload = multer({ 
+
+    dest: 'uploads/' ,
+    limits:{
+      fileSize : 1000000 //1MB
+    },
+    fileFilter :(req,file,cb)=>{
+
+        
+        if(file.fieldname === 'avatar')
+        {
+            if(file.mimetype === "image/png" || 
+                file.mimetype === "image/jpg" ||
+                file.mimetype === "image/jpeg")
+            {
+                  cb(null,true);
+    
+            }
+            else
+            {
+                cb(new Error("Only .jpg,.png or .jpeg format allowed"));
+            }
+        }
+        else if(file.fieldname === 'gallery')
+        {
+            if(file.mimetype === 'application/pdf')
+            {
+                  cb(null,true);
+    
+            }
+            else
+            {
+                cb(new Error("Only pdf format allowed"));
+            }
+        }
+        else
+        {
+            cb(new Error('There was an unkonw error'));
+        }
+
+    }
+});
+
+const app = express();
+ 
+
+app.get("/upload",(req,res)=>{
+     
+    res.sendFile(__dirname+"/index.html");
+});
+
+
+const cUploade = 
+    upload.fields([
+
+        {name: 'avatar', maxCount: 1 }, 
+        { name: 'gallery', maxCount: 8}
+    
+       ]);
+
+app.post('/', cUploade,(req, res)=> {
+   res.send('file uploded');
+});
+```
+###This is the better way to Control/restriction in File system like Destination,filename
+
+```sh
+const storage = multer.diskStorage({ 
+
+    destination:(req,file,cb) =>{
+
+     cb(null,'uploads/');
+    
+    },
+    filename:(req,file,cb)=>{
+
+         const fileExt = path.extname(file.originalname); //dont forget to const path = require('path');
+         const fileName = file.originalname
+                          .replace(fileExt,"")
+                          .toLowerCase()
+                          .split(" ")
+                          .join("-")+"-"+Date.now();
+        cb(null,fileName+fileExt);
+    },
+    
+});
+
+const upload = multer({ 
+   
+    storage:storage,  //put here 
+    limits:{
+      fileSize : 1000000 //1MB
+    },
+    fileFilter :(req,file,cb)=>{
+        if(file.mimetype === "image/png" || 
+            file.mimetype === "image/jpg" ||
+            file.mimetype === "image/jpeg")
+        {
+              cb(null,true);
+
+        }
+        else
+        {
+            cb(new Error("Only .jpg,.png or .jpeg format allowed"));
+        }
+
+    }
+});
+
+```
+
+
 
